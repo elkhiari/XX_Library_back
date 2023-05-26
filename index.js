@@ -7,10 +7,7 @@ require("dotenv").config();
 const app = express();
 
 const corsOptions = {
-  origin: 'https://xx-library-front.vercel.app/',
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD', 'PATCH', 'CONNECT', 'UPDATE'],
-  allowedHeaders: ['Content-Type', 'Authorization','body','Access-Control-Allow-Origin','Access-Control-Allow-Headers','Access-Control-Allow-Methods','Access-Control-Allow-Credentials'],
-  credentials: true,
+  origin: '*',
 };
 
 app.use(cors(corsOptions));
