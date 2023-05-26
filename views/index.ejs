@@ -1,0 +1,28 @@
+<%- include("include/_header.ejs") %>
+
+<main>
+  <div class="container">
+    <a href="/add-user" class="btn btn-primary">
+      <span>New User</span>
+      <i class="fa-solid fa-user"></i>
+    </a>
+  </div>
+  <form action="/" method="post">
+    <table
+      class="table table-borderless table-responsive"
+      style="width: 80% !important ; margin: 40px 10% 0"
+    >
+      <thead class="table-dark">
+        <th>Id</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Gender</th>
+        <th>Status</th>
+        <th>Action</th>
+      </thead>
+      <%- include("include/_show.ejs") %>
+    </table>
+  </form>
+</main>
+
+<%- include("include/_footer.ejs") %>
