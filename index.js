@@ -6,10 +6,17 @@ const cors = require("cors");
 require("dotenv").config();
 const app = express();
 
+const corsOptions = {
+  origin: 'https://xx-library-front.vercel.app/',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD', 'PATCH', 'CONNECT', 'UPDATE'],
+  allowedHeaders: ['Content-Type', 'Authorization','body','Access-Control-Allow-Origin','Access-Control-Allow-Headers','Access-Control-Allow-Methods','Access-Control-Allow-Credentials'],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(express.json());
-app.use(cors());
 
 app.use((err, req, res, next) => {
   if (err instanceof SyntaxError && err.status === 413 && 'body' in err) {
