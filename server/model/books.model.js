@@ -42,7 +42,6 @@ const booksSchema = new mongoose.Schema({
     Url: {
         type: String,
         trim: true,
-        required: true,
         lowercase: true,
     },
     categories: {
@@ -53,7 +52,7 @@ const booksSchema = new mongoose.Schema({
     status: {
         type: String,
         enum: ['pending', 'approved', 'blocked'],
-        default: 'pending',
+        default: 'approved',
     },
     downloads: {
         type: Number,

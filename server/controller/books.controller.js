@@ -23,7 +23,7 @@ const add_Books = async (req, res) => {
 
 const get_Books = async (req, res) => {
     try {
-        const books = await Books.find({status:'approved'}).populate("publisher",{password:0}).populate("categories");
+        const books = await Books.find().populate("publisher",{password:0}).populate("categories");
         res.status(200).json({books})
     } catch (error) {
         res.status(500).json({message:"internal server error"})
