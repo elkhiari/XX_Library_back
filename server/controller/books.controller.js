@@ -24,7 +24,7 @@ const add_Books = async (req, res) => {
 
 const get_Books = async (req, res) => {
     try {
-        const books = await Books.find().limit(20).populate("publisher",{password:0}).populate("categories");
+        const books = await Books.find().populate("publisher",{password:0}).populate("categories");
         res.status(200).json({books})
     } catch (error) {
         res.status(500).json({message:"internal server error"})
@@ -146,8 +146,9 @@ const incriment_Like = async (req, res) => {
 
 const get_rendom_books = async (req, res) => {
     try {
-        const books = await Books.aggregate([{ $sample: { size: 20 } },]).populate("publisher", { password: 0 }).populate("categories");
-        res.status(200).json({books})
+        const books = await Books.find().populate("publisher", { password: 0 }).populate("categories");
+        const rendom_books = books.sort(() => Math.random() - Math.random()).slice(0, 10);
+        res.status(200).json({books:rendom_books})
     } catch (error) {
         res.status(500).json({message:"internal server error"})
         console.log(error)
@@ -196,6 +197,16 @@ const get_most_books_users = async (req, res) => {
     }
 }
 
+const get_Books_by_user_id = async (req, res) => {
+    try {
+        const {id} = req.params;
+        const books = await Books.find({publisher:id}).populate("publisher",{password:0}).populate("categories");
+        res.status(200).json({books})
+    } catch (error) {
+        res.status(500).json({message:"internal server error"})
+        console.log(error)
+    }
+}
 
 
 
@@ -204,4 +215,5 @@ const get_most_books_users = async (req, res) => {
 
 
 
-module.exports = {get_Books,add_Books,get_Books_by_id,update_Books,get_most_books_users,delete_Books,get_Books_for_Admin,set_status_books,get_my_Books,get_book_by_category,incriment_Like,get_rendom_books,get_most_Like_books}
+
+module.exports = {get_Books,add_Books,get_Books_by_user_id,get_Books_by_id,update_Books,get_most_books_users,delete_Books,get_Books_for_Admin,set_status_books,get_my_Books,get_book_by_category,incriment_Like,get_rendom_books,get_most_Like_books}

@@ -1,7 +1,8 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 var Userdb = require("../model/users.model");
-const {sendingMail} = require("../mail/mailler")
+const {sendingMail} = require("../mail/mailler");
+const { default: axios } = require("axios");
 
 
 exports.create = async (req, res) => {
@@ -115,3 +116,16 @@ exports.delete = async(req, res) => {
     res.status(500).json({ message: "internal server error" });
   }
 };
+
+
+exports.get_user_by_id = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await Userdb.findById(id);
+    if (!user) return res.status(404).json({ message: "user not found" });
+    res.status(200).json({ user }); 
+  } catch (error) {
+    res.status(500).json({ message: "internal server error" });
+  }
+    
+  }

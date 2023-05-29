@@ -9,7 +9,7 @@ const { checkAdmmin } = require('../../middleware/checkAdmin');
 route_users.route('/register').post(controller.create)
 route_users.route('/login').post(controller.login);
 route_users.route('/me').get(checkisLogged, controller.GetMe);
-route_users.route('/:id').delete(checkisLogged,checkAdmmin,controller.delete);
+route_users.route('/:id').delete(checkisLogged,checkAdmmin,controller.delete).get(controller.get_user_by_id);
 route_users.route('/').get(checkisLogged,checkAdmmin,controller.get_users);
 
 module.exports = route_users;
