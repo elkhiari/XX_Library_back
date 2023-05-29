@@ -34,6 +34,9 @@ const route_Categories = require("./server/routes/categories.routes");
 
 
 
+app.use("/api/v1/uploads", express.static(path.join(__dirname, "public/uploads")));
+
+
 
 app.use("/api/v1/books/",route_Books );
 app.use("/api/v1/users/",route_users );
