@@ -1,4 +1,5 @@
 const Books = require("../model/books.model");
+const Userdb = require("../model/users.model");
 
 const add_Books = async (req, res) => {
     try {
@@ -129,14 +130,14 @@ const update_Books = async (req, res) => {
 }
 
 
-const incriment_downloads = async (req, res) => {
+const incriment_Like = async (req, res) => {
     try {
         const {id} = req.params;
         const books = await Books.findById(id);
         if(!books) return res.status(404).json({message:"books not found"})
         books.downloads = books.downloads + 1;
         await books.save();
-        res.status(200).json({message:"downloads incrimented success"})
+        res.status(200).json({message:"Like incrimented success"})
     } catch (error) {
         res.status(500).json({message:"internal server error"})
         console.log(error)
@@ -154,10 +155,41 @@ const get_rendom_books = async (req, res) => {
 }
 
 
-const get_most_downloads_books = async (req, res) => {
+const get_most_Like_books = async (req, res) => {
     try {
-        const books = await Books.find().sort({downloads:-1}).limit(20).populate("publisher", { password: 0 }).populate("categories");
+        const books = await Books.find().sort({downloads:-1}).limit(10).populate("publisher", { password: 0 }).populate("categories");
         res.status(200).json({books})
+    } catch (error) {
+        res.status(500).json({message:"internal server error"})
+        console.log(error)
+    }
+}
+
+// get most 10 users who have most books
+const get_most_books_users = async (req, res) => {
+    try {
+        // give me count of books for each Publisher and sort them by count
+        const users = await Books.aggregate([
+            {
+                $group: {
+                    _id: "$publisher",
+                    count: { $sum: 1 }
+                }
+            },
+            {
+                $sort: { count: -1 }
+            },
+            {
+                $limit: 10
+            }
+
+        ])
+
+        const users_by_data = await Promise.all(users.map(async (user) => {
+            const user_data = await Userdb.findById(user._id, { password: 0 });
+            return { ...user_data._doc, count: user.count }
+        }))
+        res.status(200).json({ users: users_by_data })
     } catch (error) {
         res.status(500).json({message:"internal server error"})
         console.log(error)
@@ -171,4 +203,5 @@ const get_most_downloads_books = async (req, res) => {
 
 
 
-module.exports = {get_Books,add_Books,get_Books_by_id,update_Books,delete_Books,get_Books_for_Admin,set_status_books,get_my_Books,get_book_by_category,incriment_downloads,get_rendom_books,get_most_downloads_books}
+
+module.exports = {get_Books,add_Books,get_Books_by_id,update_Books,get_most_books_users,delete_Books,get_Books_for_Admin,set_status_books,get_my_Books,get_book_by_category,incriment_Like,get_rendom_books,get_most_Like_books}
