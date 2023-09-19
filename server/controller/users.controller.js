@@ -10,7 +10,7 @@ exports.create = async (req, res) => {
   try {
 
       const { name, email, gender, status, password } = req.body;
-      const avatar = "/uploads/"+req.file.filename;
+      const avatar = "null";
 
       const ExistUser = await Userdb.find({ email });
       if (ExistUser.length > 0) {
