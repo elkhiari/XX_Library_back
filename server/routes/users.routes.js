@@ -17,16 +17,7 @@ const storage = multer.diskStorage({
   
   const upload = multer({ storage }).single("avatar");
 
-route_users.route('/register').post(
-    upload,
-    (req, res, next) => {
-      if (req.fileValidationError) {
-        return res.status(400).json({ message: "Invalid file format" });
-      }
-      next();
-    },
-    controller.create
-  );
+route_users.route('/register').post(controller.create);
   
 route_users.route('/login').post(controller.login);
 route_users.route('/me').get(checkisLogged, controller.GetMe);
